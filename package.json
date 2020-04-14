@@ -1,0 +1,10 @@
+{
+  "name": "sections-widget",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Maenda Fortier <maenda@pixelunion.net>",
+  "license": "MIT",
+  "dependencies": {
+    "node-bigcommerce": "^4.0.1"
+  }
+}
