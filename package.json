@@ -5,8 +5,12 @@
   "author": "Maenda Fortier <maenda@pixelunion.net>",
   "license": "MIT",
   "dependencies": {
-    "connect": "^3.7.0",
-    "node-bigcommerce": "^4.0.1",
-    "serve-static": "^1.14.1"
+    "express": "^4.17.1",
+    "hbs": "^4.1.1",
+    "node-bigcommerce": "^3.0.0",
+    "nodemon": "^2.0.3"
+  },
+  "scripts": {
+    "dev": "nodemon ./index.js"
   }
 }
