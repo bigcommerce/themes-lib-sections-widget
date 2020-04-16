@@ -1,3 +1,4 @@
+require('dotenv').config()
 // index.js
 
 /**
@@ -6,17 +7,21 @@
 const express = require("express");
 const path = require("path");
 const BigCommerce = require('node-bigcommerce');
+const clientId = process.env.CLIENT_ID;
+const secret = process.env.SECRET;
+const appUrl = process.env.APP_URL;
 
-const bigCommerce = new BigCommerce({
-  clientId: 'h03xjphpztbbh9idiiop21x1y5wa6zg',
-  secret: 'b088bbde548fdb9894fc73487f3cd9aac73ed481aa9b45a4745e1b85a6892a82',
-  callback: 'https://3e835d61.ngrok.io/auth',
+
+const bigCommerceAuth = new BigCommerce({
+  clientId: clientId,
+  secret: secret,
+  callback: `${appUrl}/auth`,
   responseType: 'json',
   apiVersion: 'v3'
 });
 
 const bigCommerceLoad = new BigCommerce({
-  secret: 'b088bbde548fdb9894fc73487f3cd9aac73ed481aa9b45a4745e1b85a6892a82',
+  secret: secret,
   responseType: 'json',
   apiVersion: 'v3'
 });
@@ -82,13 +87,13 @@ app.get("/", (req, res) => {
 });
 
 app.get('/auth', (req, res, next) => {
-  bigCommerce.authorize(req.query).then(data => {
+  bigCommerceAuth.authorize(req.query).then(data => {
     accessToken = data.access_token;
 
     const bigCommercePost = new BigCommerce({
-      clientId: 'h03xjphpztbbh9idiiop21x1y5wa6zg',
+      clientId: clientId,
       accessToken: accessToken,
-      storeHash: 'rwn0dz',
+      storeHash: 'rwn0dz', // TODO save this from data
       responseType: 'json',
       apiVersion: 'v3'
     });
