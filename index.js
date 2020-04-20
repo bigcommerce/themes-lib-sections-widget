@@ -1,5 +1,5 @@
-require('dotenv').config()
 // index.js
+require('dotenv').config()
 
 /**
  * Required External Modules
@@ -10,7 +10,6 @@ const BigCommerce = require('node-bigcommerce');
 const clientId = process.env.CLIENT_ID;
 const secret = process.env.SECRET;
 const appUrl = process.env.APP_URL;
-
 
 const bigCommerceAuth = new BigCommerce({
   clientId: clientId,
@@ -67,8 +66,6 @@ const accordionTemplate = {
   "template": "{{#each accordionTabs}}<h1>title:{{title}}</h1><div>content:{{{content}}}</div>{{/each}}"
 }
 
-
-
 /**
  * App Variables
  */
@@ -83,7 +80,7 @@ app.set('view engine', 'hbs');
  * Routes Definitions
  */
 app.get("/", (req, res) => {
-  res.status(200).send("WHATABYTE: Food For Devs");
+  res.status(200).send("Sections Widget Home");
 });
 
 app.get('/auth', (req, res, next) => {
@@ -100,10 +97,10 @@ app.get('/auth', (req, res, next) => {
 
     bigCommercePost.post('/content/widget-templates', accordionTemplate)
       .then(data => {
-        console.log('great success');
+        console.log('Widget template pushed to store');
       })
       .catch(err => {
-        console.log('post error', err);
+        console.log('Post error:', err);
       });
 
       res.render('auth', { title: 'Authorized!', data: data });
