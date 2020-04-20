@@ -71,7 +71,6 @@ const accordionTemplate = {
  */
 const app = express();
 const port = process.env.PORT || "8000";
-let accessToken = '';
 /**
  *  App Configuration
  */
@@ -85,12 +84,12 @@ app.get("/", (req, res) => {
 
 app.get('/auth', (req, res, next) => {
   bigCommerceAuth.authorize(req.query).then(data => {
-    accessToken = data.access_token;
+    const storeHash = data.context.slice(data.context.indexOf('/') + 1);
 
     const bigCommercePost = new BigCommerce({
       clientId: clientId,
-      accessToken: accessToken,
-      storeHash: 'rwn0dz', // TODO save this from data
+      accessToken: data.access_token,
+      storeHash: storeHash,
       responseType: 'json',
       apiVersion: 'v3'
     });
