@@ -85,7 +85,7 @@ app.get("/", (req, res) => {
 app.get('/auth', (req, res, next) => {
   bigCommerceAuth.authorize(req.query).then(data => {
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
-
+    // TODO: save store hash, permanent access token in db for future
     const bigCommercePost = new BigCommerce({
       clientId: clientId,
       accessToken: data.access_token,
@@ -94,6 +94,7 @@ app.get('/auth', (req, res, next) => {
       apiVersion: 'v3'
     });
 
+    // todo: move this into load(between verify and success message display)
     bigCommercePost.post('/content/widget-templates', accordionTemplate)
       .then(data => {
         console.log('Widget template pushed to store');
