@@ -14,14 +14,16 @@ const bigCommerceAuth = new BigCommerce({
   apiVersion: 'v3'
 });
 
-module.exports = (req, res, next) => {
-  bigCommerceAuth.authorize(req.query).then(async data => {
+module.exports = async (req, res, next) => {
+  try {
+    const data = await bigCommerceAuth.authorize(req.query);
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
 
     await postTemplates(data.access_token, storeHash);
-  })
-  .then(() => {
-    res.send(200);
-  })
-  .catch(next => {console.log(next)});
+
+    res.sendStatus(200);
+  }
+  catch(next) {
+    console.log(next)
+  };
 }
