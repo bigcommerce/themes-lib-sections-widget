@@ -2,19 +2,21 @@ const BigCommerce = require('node-bigcommerce');
 const accordionTemplate = require('../widget-templates/accordion');
 const postTemplates = require('./post-templates');
 
-const clientId = process.env.CLIENT_ID;
-const secret = process.env.SECRET;
-const appUrl = process.env.APP_URL;
-
 const bc = new BigCommerce({
-  clientId: clientId,
-  secret: secret,
-  callback: `${appUrl}/auth`,
+  clientId: process.env.CLIENT_ID,
+  secret: process.env.SECRET,
+  callback: `${process.env.APP_URL}/auth`,
   responseType: 'json',
   apiVersion: 'v3'
 });
 
-module.exports = async (req, res, next) => {
+/**
+ * Using the node-bigcommerce libary, this function authorizes
+ * the app to be installed on a user's store
+ * @param {Object} req - Request received from server {@link https://expressjs.com/en/api.html#req}
+ * @param {Object} res - Used to send a response back to the server {@link https://expressjs.com/en/api.html#res}
+ */
+module.exports = async (req, res) => {
   try {
     const data = await bc.authorize(req.query);
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
@@ -22,8 +24,8 @@ module.exports = async (req, res, next) => {
     await postTemplates(data.access_token, storeHash);
 
     res.sendStatus(200);
-  }
-  catch(next) {
-    console.log(next)
+  } catch(err) {
+    console.log(err);
+    res.send(400);
   };
 }
