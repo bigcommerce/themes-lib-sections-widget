@@ -6,7 +6,7 @@ const clientId = process.env.CLIENT_ID;
 const secret = process.env.SECRET;
 const appUrl = process.env.APP_URL;
 
-const bigCommerceAuth = new BigCommerce({
+const bc = new BigCommerce({
   clientId: clientId,
   secret: secret,
   callback: `${appUrl}/auth`,
@@ -16,7 +16,7 @@ const bigCommerceAuth = new BigCommerce({
 
 module.exports = async (req, res, next) => {
   try {
-    const data = await bigCommerceAuth.authorize(req.query);
+    const data = await bc.authorize(req.query);
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
 
     await postTemplates(data.access_token, storeHash);
