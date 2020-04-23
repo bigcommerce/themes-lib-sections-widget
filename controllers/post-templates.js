@@ -3,7 +3,7 @@ const accordionTemplate = require('../widget-templates/accordion');
 
 /**
  * Using the node-bigcommerce libary, this function runs verification with
- * Bigcommerce and redirects to app landing page
+ * Bigcommerce and renders the app landing page
  * @param {string} accessToken - Permanent access token received from client store
  * @param {string} storeHash - Unique identifier for client store
  */
