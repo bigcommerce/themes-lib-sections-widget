@@ -1,6 +1,7 @@
 const BigCommerce = require('node-bigcommerce');
 const accordionTemplate = require('../widget-templates/accordion');
 const postTemplates = require('./post-templates');
+const { insertStores } = require('./db');
 
 const bc = new BigCommerce({
   clientId: process.env.CLIENT_ID,
@@ -21,11 +22,12 @@ module.exports = async (req, res) => {
     const data = await bc.authorize(req.query);
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
 
+    await insertStores(storeHash, data.access_token, data.scope);
     await postTemplates(data.access_token, storeHash);
 
     res.sendStatus(200);
   } catch(err) {
     console.log(err);
     res.send(400);
-  };
+  }
 }

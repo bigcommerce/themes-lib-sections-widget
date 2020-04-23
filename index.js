@@ -1,5 +1,5 @@
 // index.js
-require('dotenv').config()
+require('dotenv').config();
 
 /**
  * Required External Modules
