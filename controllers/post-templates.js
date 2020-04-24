@@ -17,7 +17,12 @@ module.exports = async (accessToken, storeHash) => {
   });
 
   try {
-    await bc.post('/content/widget-templates', accordionTemplate);
+    const addedTemplate =
+      await bc.post('/content/widget-templates', accordionTemplate);
+    return {
+      'uuid': addedTemplate.data.uuid,
+      'name': addedTemplate.data.name
+    }
   }
   catch(err) {
     console.log('Error posting widgets:', err);
