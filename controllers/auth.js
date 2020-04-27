@@ -1,5 +1,5 @@
 const BigCommerce = require('node-bigcommerce');
-const { insert } = require('./db');
+const { insert, retrieve } = require('./db');
 const saveWidget = require('./save-widget');
 
 const bc = new BigCommerce({
@@ -21,7 +21,15 @@ const bc = new BigCommerce({
 module.exports = async (req, res) => {
   try {
     const data = await bc.authorize(req.query);
-    await saveWidget(data);
+    const storeHash = data.context.slice(data.context.indexOf('/') + 1);
+
+    const retrieved = await retrieve('stores', 'hash', storeHash);
+
+    // Sanity check: don't install if there is already an install
+    if (!retrieved.length) {
+      await saveWidget(data);
+    }
+
     res.sendStatus(200);
   } catch(err) {
     console.log(err);
