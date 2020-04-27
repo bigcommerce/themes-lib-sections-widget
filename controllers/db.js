@@ -9,21 +9,34 @@ pool.on('error', (err, client) => {
 
 /**
  * Retrieves a row from a table in database
- * Note: For these purposes we are working with a simple condition
  *
  * @param {string} table
- * @param {string} key
- * @param {string} value
+ * @param {array/string} keys - string if there is only one
+ * @param {array/string} values - string if there is only one
+ * @param {int} numConditions [1]
  *
  */
 
-retrieve = async (table, key, value) => {
+retrieve = async (table, keys, values, numConditions = 1) => {
   const client = await pool.connect();
 
   try {
-    const text = `SELECT * FROM ${table} WHERE ${key} = $1`;
-    const values = [value];
+    let text = `SELECT * FROM ${table} WHERE `;
 
+    if (numConditions === 1) {
+      text += `${keys} = $1`;
+      values = [values];
+    } else {
+      text += '(';
+      keys.forEach((key, index) => {
+        text = `${text} ${key} = $${index+1}`;
+
+        if (index !== keys.length - 1){
+          text = `${text} AND `;
+        }
+      });
+      text += ')';
+    }
     const res = await client.query(text, values);
 
     return res.rows;
