@@ -13,19 +13,11 @@ saveWidget = async (data) => {
 
     const postedWidget = await postTemplates(data.access_token, storeHash);
 
-    const insertStore = insert(
+    await insert(
       'widget_templates',
       ['hash', 'uuid', 'name'],
       [storeHash, postedWidget.uuid, postedWidget.name]
     );
-
-    const insertWidget = insert(
-      'stores',
-      ['hash', 'access_token', 'scope'],
-      [storeHash, data.access_token, data.scope]
-    );
-
-    await Promise.all([insertStore, insertWidget]);
   } catch(err) {
     console.log(err.stack);
   }

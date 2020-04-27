@@ -27,8 +27,14 @@ module.exports = async (req, res) => {
 
     // Sanity check: don't install if there is already an install
     if (!retrieved.length) {
-      await saveWidget(data);
+      const insertStore = insert(
+        'stores',
+        ['hash', 'access_token', 'scope'],
+        [storeHash, data.access_token, data.scope]
+      );
     }
+
+    await saveWidget(data);
 
     res.sendStatus(200);
   } catch(err) {
