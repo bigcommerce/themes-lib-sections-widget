@@ -7,6 +7,14 @@ pool.on('error', (err, client) => {
   process.exit(-1)
 })
 
+/**
+ * Inserts row into a table in database
+ *
+ * @param {string} table
+ * @param {array} keys
+ * @param {array} values
+ *
+ */
 insert = async (table, keys, values) => {
   const client = await pool.connect();
   const valueParams = [];
@@ -27,4 +35,29 @@ insert = async (table, keys, values) => {
   }
 }
 
+/**
+ * Removes row from a table in database
+ * Note: For these purposes we are working with a simple condition
+ *
+ * @param {string} table
+ * @param {string} key
+ * @param {string} value
+ *
+ */
+remove = async (table, key, value) => {
+  const client = await pool.connect();
+
+  try {
+    const text = `DELETE FROM ${table} WHERE ${key} = $1`;
+    const values = [value];
+
+    await client.query(text, valuess);
+  } catch(err) {
+    console.log(err.stack);
+  } finally {
+    client.release();
+  }
+}
+
 exports.insert = insert;
+exports.remove = remove;

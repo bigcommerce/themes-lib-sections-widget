@@ -7,6 +7,7 @@ require('dotenv').config();
 const express = require("express");
 const authController = require('./controllers/auth');
 const loadController = require('./controllers/load');
+const uninstallController = require('./controllers/uninstall');
 
 /**
  * App Variables
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.get('/auth', authController);
 app.get('/load', loadController);
+app.get('/uninstall', uninstallController);
 /**
  * Server Activation
  */
