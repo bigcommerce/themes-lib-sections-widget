@@ -8,6 +8,33 @@ pool.on('error', (err, client) => {
 })
 
 /**
+ * Retrieves a row from a table in database
+ * Note: For these purposes we are working with a simple condition
+ *
+ * @param {string} table
+ * @param {string} key
+ * @param {string} value
+ *
+ */
+
+retrieve = async (table, key, value) => {
+  const client = await pool.connect();
+
+  try {
+    const text = `SELECT * FROM ${table} WHERE ${key} = $1`;
+    const values = [value];
+
+    const res = await client.query(text, values);
+
+    return res.rows;
+  } catch(err) {
+    console.log(err.stack);
+  } finally {
+    client.release();
+  }
+}
+
+/**
  * Inserts row into a table in database
  *
  * @param {string} table
@@ -51,7 +78,7 @@ remove = async (table, key, value) => {
     const text = `DELETE FROM ${table} WHERE ${key} = $1`;
     const values = [value];
 
-    await client.query(text, valuess);
+    await client.query(text, values);
   } catch(err) {
     console.log(err.stack);
   } finally {
@@ -61,3 +88,4 @@ remove = async (table, key, value) => {
 
 exports.insert = insert;
 exports.remove = remove;
+exports.retrieve = retrieve;
