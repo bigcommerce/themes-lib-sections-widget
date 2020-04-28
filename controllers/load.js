@@ -10,7 +10,8 @@ const bc = new BigCommerce({
 
 /**
  * Using the node-bigcommerce libary, this function runs verification with
- * Bigcommerce and redirects to app landing page
+ * Bigcommerce, installs/updates widget templates
+ *  and redirects to app landing page
  * @param {Object} req - Request sent from server {@link https://expressjs.com/en/api.html#req}
  * @param {Object} res - Used to send a response back to the server and render page {@link https://expressjs.com/en/api.html#res}
  */
