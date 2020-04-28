@@ -1,6 +1,6 @@
 const BigCommerce = require('node-bigcommerce');
 const { insert, retrieve } = require('./db');
-const saveWidget = require('./save-widget');
+const saveWidgets = require('./save-widgets');
 
 const bc = new BigCommerce({
   clientId: process.env.CLIENT_ID,
@@ -34,8 +34,8 @@ module.exports = async (req, res) => {
       );
     }
 
-    await saveWidget(data);
-
+    const savedWidgets = await saveWidgets(data);
+    console.log(savedWidgets);
     res.sendStatus(200);
   } catch(err) {
     console.log(err);
