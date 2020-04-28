@@ -22,7 +22,6 @@ module.exports = async (req, res) => {
   try {
     const data = await bc.authorize(req.query);
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
-
     const retrieved = await retrieve('stores', 'hash', storeHash);
 
     // Sanity check: don't install if there is already an install
@@ -34,9 +33,8 @@ module.exports = async (req, res) => {
       );
     }
 
-    const savedWidgets = await saveWidgets(data);
-    console.log(savedWidgets);
-    res.sendStatus(200);
+    const savedWidgets = await saveWidgets(data.access_token, storeHash);
+    res.render('welcome', { savedWidgets: savedWidgets });
   } catch(err) {
     console.log(err);
     res.send(400);
