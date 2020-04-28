@@ -29,10 +29,10 @@ retrieve = async (table, keys, values, numConditions = 1) => {
     } else {
       text += '(';
       keys.forEach((key, index) => {
-        text = `${text} ${key} = $${index+1}`;
+        text += ` ${key} = $${index+1}`;
 
         if (index !== keys.length - 1){
-          text = `${text} AND `;
+          text += ' AND ';
         }
       });
       text += ')';
