@@ -1,4 +1,4 @@
-const postTemplates = require('./post-templates');
+const saveTemplates = require('./save-templates');
 const { retrieve } = require('./db');
 
 /**
@@ -11,24 +11,30 @@ const { retrieve } = require('./db');
 saveWidget = async (data) => {
   // const WIDGET_TEMPLATES = [
   //   'Accordion'
+  //   ...
   // ];
 
   try {
     const storeHash = data.context.slice(data.context.indexOf('/') + 1);
     const savedTemplate = await retrieve('widget_templates', ['name', 'hash'], ['Accordion', storeHash], 2);
-    console.log(savedTemplate);
+
     /*
     * Update retrieve logic to use multiple conditions
     */
-    // const postedWidget = await postTemplates(data.access_token, storeHash);
 
+    if (savedTemplate.length === 0) {
+      const postedWidget = await saveTemplates(data.access_token, storeHash);
 
-    // await insert(
-    //   'widget_templates',
-    //   ['hash', 'uuid', 'name'],
-    //   [storeHash, postedWidget.uuid, postedWidget.name]
-    // );
+      await insert(
+        'widget_templates',
+        ['hash', 'uuid', 'name'],
+        [storeHash, postedWidget.uuid, postedWidget.name]
+      );
+    } else {
+      const templateUuid = savedTemplate[0].uuid;
 
+      const postedWidget = await saveTemplates(data.access_token, storeHash, templateUuid);
+    }
   } catch(err) {
     console.log(err.stack);
   }
