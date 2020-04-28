@@ -11,7 +11,8 @@ const WIDGET_TEMPLATES = [
 /**
  * Wrapper function to post widget templates to the store and into the db
  *
- * @param {Object} data - data returned from the authorization of the app
+ * @param {string} accessToken - Permanent access token issued by BigC
+ * @param {string} storeHash - hash value related to store
  * @returns {array} - an array of objects with name and uuid
  */
 saveWidgets = async (accessToken, storeHash) => {
