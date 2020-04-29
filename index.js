@@ -13,7 +13,10 @@ const uninstallController = require('./controllers/uninstall');
  * App Variables
  */
 const app = express();
-const port = process.env.PORT || "8000";
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 /**
  *  App Configuration
  */
