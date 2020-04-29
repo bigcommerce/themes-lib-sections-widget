@@ -1,5 +1,5 @@
 module.exports = {
-  "name": "Accordion",
+  "name": "Test",
   "schema": [
     {
       "type": "array",
@@ -36,5 +36,5 @@ module.exports = {
       ]
     }
   ],
-  "template": "{{#each accordionTabs}}<h1>title2:{{title}}</h1><div>content:{{{content}}}</div>{{/each}}"
+  "template": "{{#each accordionTabs}}<h1>test me:{{title}}</h1><div>content:{{{content}}}</div>{{/each}}"
 }
