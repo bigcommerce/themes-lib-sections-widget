@@ -1,6 +1,9 @@
 const { Pool } = require('pg');
-
-const pool = new Pool();
+const connectionString = process.env.PRODUCTION ? process.env.DATABASE_URL : `postgres:${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`
+const pool = new Pool({
+  connectionString: connectionString,
+  ssl: process.env.PRODUCTION ? true : false
+});
 
 pool.on('error', (err, client) => {
   console.error('Unexpected error on idle client', err)
